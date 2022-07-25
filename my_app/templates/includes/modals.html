@@ -1,0 +1,239 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $('.myCheck').on("change", function () {
+            $('#' + $(this).attr('data-name')).toggle(!this.checked); // toggle instead
+            $(".form-select").prop("required", !this.checked);
+        }).change(); // trigger the change
+
+    });
+    $('#myTab a').on('click', function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+    });
+    $(document).ready(function () {
+        $(function () {
+            $("#mybutton{{player.name}}").click(function () {
+
+                $(".nav").each(function () {
+                    // console.log(this.id)
+                    var old_list = sessionStorage['item_' + this.id]
+
+                    if (typeof old_list === 'undefined') {
+                        var new_id = '#add_tab_' + this.id
+                        var new_list = '<li class="nav-item"><a data-toggle="tab" data-toggle="tab"+ href=' + new_id + ' role="tab" aria-controls="add" aria-selected="true"><span>New</span><span class="glyphicon glyphicon-pencil"></span></a></li>'
+                        $('#' + this.id).append(new_list)
+                        // console.log($('#' + this.id))
+                        sessionStorage.setItem('item_' + this.id, new_list)
+                    }
+
+                    else {
+                        var new_id = '#add_tab_' + this.id
+                        var new_list = '<li class="nav-item"><a data-toggle="tab" data-toggle="tab"+ href=' + new_id + ' role="tab" aria-controls="add" aria-selected="true"><span>New</span><span class="glyphicon glyphicon-pencil"></span></a></li>'
+                        $('#' + this.id).append(new_list)
+                        var update_list = old_list + new_list
+                        sessionStorage.setItem('item_' + this.id, update_list)
+                    }
+                });
+
+            })
+            $(".glyphicon-pencil").click(function () {
+                var pen = $(this);
+                pen.css("visibility", "hidden");
+                $(this).prev().attr("contenteditable", "true").focusout(function () {
+                    $(this).removeAttr("contenteditable").off("focusout");
+                    pen.css("visibility", "visible");
+                    // sessionStorage.setItem('test', this)
+
+                });
+            });
+
+            $("#myTab{{player.name}}").each(function () {
+                var get_list = sessionStorage['item_' + this.id]
+                $('#' + this.id).append(get_list)
+            })
+        });
+
+    });
+
+    $(document).ready(function () {
+        $('#split_content{{player.name}}').show();
+        $('#shoot_content{{player.name}}').hide();
+        $('input[type="radio"]').click(function () {
+            if ($(this).attr('id') == 'split{{player.name}}') {
+                $('#split_content{{player.name}}').show();
+                $('#shoot_content{{player.name}}').hide();
+            }
+
+            else if ($(this).attr('id') == 'shoot{{player.name}}') {
+                $('#shoot_content{{player.name}}').show();
+                $('#split_content{{player.name}}').hide();
+            }
+        });
+    });
+
+</script>
+
+<body>
+    <div class="modal fade" id="ModalWin{{player.name}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog center">
+            <div class="modal-content center">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Win details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body row center">
+                    <form method="POST" style="text-align: center; " class="form">
+                        <h4 class="text-center">How many tais did {{player.name}} win?</h4>
+                        {{win.hidden_tag()}}
+                        <div class='center_input row'>
+                            <input type="number" class="form-control input-group-lg" id="number_tai" name="number_tai"
+                                placeholder="Please input number of tais won" min="0" required>
+                        </div>
+                        <input id="winner" name="winner" type="hidden" value="{{player.name}}" size="4"> <br>
+                        <input type="checkbox" name="zimo" data-name='div{{player.name}}' class="myCheck" unchecked>
+                        Zi Mo
+
+                        <div class="input-group toggleDiv" id="div{{player.name}}">
+
+                            <h5>Shooter</h5>
+                            <select name='shooter' class="form-select" id="input-group-lg" style="color:black;"
+                                required="required">
+                                <option disabled selected hidden value="">Choose...</option>
+                                {% for shoot in player_list %}
+                                {%if shoot.name!=player.name%}
+                                <option value="{{shoot.name}}">{{shoot.name}}</option>
+                                {%endif%}
+                                {%endfor%}
+                            </select>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Go
+                                Back</button>
+                            <input type="submit" id="submit_win" name="submit_win" value="Confirm"
+                                class="btn btn-outline-success">
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="ModalOther{{player.name}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog center">
+            <div class="modal-content center">
+                <div class="modal-header" id='myheader'>
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" id="myTab{{player.name}}" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="gang-tab" data-toggle="tab" href="#gang{{player.name}}"
+                                role="tab" aria-controls="gang" aria-selected="true">Gang</a>
+                        </li>
+                    </ul>
+                    <button type="button" id="mybutton{{player.name}}" class="btn btn-outline-light">+ Add Rule</button>
+                </div>
+                <div class="modal-body row center">
+                    <div class="tab-content center" style="text-align: center; ">
+                        <div class="tab-pane active" id="gang{{player.name}}" role="tabpanel"
+                            aria-labelledby="gang-tab">
+                            <h4>{{player.name}} won a Gang</h4>
+                            <form method="POST" style="text-align: center; " class="form">
+                                {{win_gang.hidden_tag()}}
+                                <input id="winner_gang" name="winner_gang" type="hidden" value="{{player.name}}"> <br>
+                                <input type="checkbox" name="am_gang" data-name='gang_data{{player.name}}'
+                                    class="myCheck" unchecked>
+                                Am gang
+                                {%if game.shooter%}
+                                <div class="input-group toggleDiv" id="gang_data{{player.name}}">
+
+                                    <h5>Shooter</h5>
+                                    <select name='shooter' class="form-select" id="input-group-lg"
+                                        aria-label="Example select with button addon" style="color:black;"
+                                        required="required">
+                                        <option disabled selected hidden value="">Choose...</option>
+                                        {% for shoot in player_list %}
+                                        {%if shoot.name!=player.name%}
+                                        <option value="{{shoot.name}}">{{shoot.name}}</option>
+                                        {%endif%}
+                                        {%endfor%}
+                                    </select>
+                                </div>
+                                {%endif%}
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Go
+                                        Back</button>
+                                    <!-- <button type="button" class="btn btn-success" value="submit_gang" name="submit_gang"
+                                        id="submit_gang">{{win_gang.submit(class="btn btn-outline-success")}}</button> -->
+                                    <input type="submit" id="submit_gang" name="submit_gang" value="Confirm"
+                                        class="btn btn-outline-success">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane" id="add_tab_myTab{{player.name}}" role="tabpanel"
+                            aria-labelledby="others-tab">
+                            <h4>{{player.name}} won!</h4>
+
+                            <form method="POST" style="text-align: center; " class="form">
+                                <label>Split Evenly</label>
+                                <input type="radio" class="myRadio" id="split{{player.name}}" name="radio1"
+                                    value="split" checked><br>
+                                <label>Shooter</label>
+                                <input type="radio" class="myRadio" id="shoot{{player.name}}" name="radio1"
+                                    value="shoot">
+                                <input id=" winner_others" name="winner_others" type="hidden" value="{{player.name}}">
+                                <br>
+                                <div id="split_content{{player.name}}">
+                                    <h4>Each player pays $<input type="number" step="0.01" style="color:black;"
+                                            name="total_amount" min="0">
+                                        to {{player.name}}
+                                    </h4>
+                                </div>
+                                <div class="input-group center" id="shoot_content{{player.name}}">
+
+                                    <h5>Shooter</h5>
+                                    <select name='shooter' class="form-select" id="input-group-lg"
+                                        aria-label="Example select with button addon" style="color:black;">
+                                        <option disabled selected hidden>Choose...</option>
+                                        {% for shoot in player_list %}
+                                        {%if shoot.name!=player.name%}
+                                        <option value="{{shoot.name}}">{{shoot.name}}</option>
+                                        {%endif%}
+                                        {%endfor%}
+                                    </select> pays $<input type="number" step="0.01" style="color:black;"
+                                        name="shooter_amount" min="0"> to
+                                    {{player.name}}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Go
+                                        Back</button>
+                                    <!-- <button type="button" class="btn btn-success" value="submit_gang" name="submit_gang"
+                                        id="submit_gang">{{win_gang.submit(class="btn btn-outline-success")}}</button> -->
+                                    <input type="submit" id="submit_other" name="submit_other" value="Confirm"
+                                        class="btn btn-outline-success">
+                                </div>
+
+                            </form>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>

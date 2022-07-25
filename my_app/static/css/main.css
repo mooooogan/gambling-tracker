@@ -1,0 +1,35 @@
+.modal-content {
+    background-color: #212121;
+}
+
+.toggleDiv {
+    display: block;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+
+}
+
+.form {
+    width: 500px;
+    overflow: hidden;
+    justify-content: center;
+}
+
+input[type='number'] {
+    text-align: center;
+}
+
+.center_input {
+    margin: auto;
+    width: 60%;
+    padding: 10px;
+}
+
+[contenteditable] {
+    border: solid 1px white;
+    padding: 5px;
+    border-radius: 3px;
+}

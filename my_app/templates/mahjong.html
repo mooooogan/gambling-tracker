@@ -1,0 +1,72 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+{% extends 'base.html' %}
+{% block title %}
+Welcome to Gambling Tracker
+{% endblock %}
+
+{% block content %}
+
+<body>
+    <div class="row">
+        <div class="col-8">
+            <h2>Mahjong</h2>
+            <div>
+                {% for player in player_list %}
+                {%include 'includes/modals.html'%}
+
+                <div style="margin-bottom: 5px" class="card text-center bg-dark">
+                    <div class="card-body">
+                        <h5 class="card-title">{{player.name}}</h5>
+                        <h5>{{player.rounded}}</h5>
+                        <button class="btn btn-outline btn-success" data-toggle="modal"
+                            data-target="#ModalWin{{player.name}}">
+                            Win</button>
+                        <button class="btn btn-outline btn-info" data-toggle="modal"
+                            data-target="#ModalOther{{player.name}}">
+                            Other Wins</button>
+
+                    </div>
+
+                </div>
+                {%endfor%}
+            </div>
+        </div>
+        <div class="col-4">
+
+            <h2>Game config</h2>
+
+            <div>
+                <div style="margin-bottom: 5px" class="card text-center bg-dark">
+
+                    <div class="card-body">
+                        Price per tai: ${{game.per_tai}}</div>
+                    <div class="card-body">
+                        Shooter: {{game.pretty_shooter}}</div>
+
+                </div>
+
+            </div>
+            <h2>Game history</h2>
+            <div>
+                <div style="overflow: auto; height:348px; padding: 20px;" class="card text-center bg-dark">
+                    {% for para in revered_para %}
+                    <p>{{para}}</p>
+                    {%endfor%}
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-5 p-lg-5 mx-auto my-5 text-center">
+            <form method="POST">
+                <input type="submit" id="undo" name="undo" value="Undo once" class="btn btn-default btn-sm">
+            </form>
+            <br><br>
+            <a class="btn btn-danger" href="{{ url_for('endgame') }}">End Game</a>
+        </div>
+    </div>
+
+</body>
+{% endblock %}

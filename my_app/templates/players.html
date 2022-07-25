@@ -1,0 +1,35 @@
+{% extends 'base.html'%}
+{%block title%}
+Login
+{%endblock%}
+
+{%block content%}
+
+<body class="text-center">
+    <div class='container'>
+        <form method="POST" class="form-signin" style='color:white'>
+            {{form.hidden_tag()}}
+            <img class="mb-4" src="https://cdn.iconscout.com/icon/premium/png-256-thumb/mahjong-2970477-2466077.png"
+                alt="">
+            <h1 class="h3 mb-3 font-weight-normal"> Input player names</h1>
+            <br>
+            {{form.name1.label()}}
+            {{form.name1(class='form-control' , placeholder='Enter Player 1' )}}
+            {{form.name2.label()}}
+            {{form.name2(class='form-control' , placeholder='Enter Player 2' )}}
+            {{form.name3.label()}}
+            {{form.name3(class='form-control' , placeholder='Enter Player 3' )}}
+            {{form.name4.label()}}
+            {{form.name4(class='form-control' , placeholder='Enter Player 4' )}}
+            {{form.buy_in.label()}}
+            {{form.buy_in(class='form-control' , placeholder='Buy in amount' )}}
+            {{form.per_tai.label()}}
+            {{form.per_tai(class='form-control' , placeholder='Please input in $' )}}
+            {{form.shooter.label()}}
+            {{form.shooter(class='form-control')}}
+            <br>
+            {{form.submit(class = "btn-lg btn-block btn-primary")}}
+    </div>
+</body>
+
+{%endblock%}
