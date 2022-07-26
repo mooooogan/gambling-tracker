@@ -1,6 +1,6 @@
 argcomplete==2.0.0
 bcrypt==3.2.2
-certifi @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_83242e7e-f82d-4a71-8ef2-9d71d212d249gu_wxmeq/croots/recipe/certifi_1655968827803/work/certifi
+certifi==2022.6.15
 cffi==1.15.1
 click==8.1.3
 dnspython==2.2.1
@@ -15,9 +15,12 @@ idna==3.3
 itsdangerous==2.1.2
 Jinja2==3.1.2
 MarkupSafe==2.1.1
+pip==22.1.2
 pipx==1.0.0
 pycparser==2.21
+setuptools==61.2.0
 SQLAlchemy==1.4.39
 userpath==1.8.0
 Werkzeug==2.2.0
+wheel==0.37.1
 WTForms==3.0.1
